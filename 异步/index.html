@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>js2</title>
+  <style>
+    input {
+      border-radius: 5px;
+    }
+
+    span {
+      background: red;
+      color: white;
+      text-align: center;
+      font-size: 30px;
+      height: 50px;
+      line-height: 50px;
+      padding: 0 15px;
+      margin: 2px 0;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" />
+  <input type="button" value="左侧入" />
+  <input type="button" value="左侧出" />
+  <input type="button" value="右侧入" />
+  <input type="button" value="右侧出" />
+  <input type="button" value="打乱" />
+  <input type="button" value="冒泡" />
+  <input type="button" value="选择" />
+  <input type="button" value="插入" />
+  <div id="container"></div>
+
+
+  <script>
+    let input = document.getElementsByTagName('input')
+    let container = document.getElementById("container");
+    const [text, btnLeftEn, btnLeftOut, btnRightEn, btnRightOut, btnInterupt, btnBubble, btnSelect, btnInsert] = input;
+
+    function click() {
+      let arr = [30, 500, 100, 80, 120];
+      let value = text.value; // 为什么再这赋值不行
+      btnLeftEn.onclick = () => {
+        arr.unshift(text.value);
+        renderList(arr);
+      }
+      btnLeftOut.onclick = () => {
+        arr.shift();
+        renderList(arr);
+      }
+      btnRightEn.onclick = () => {
+        arr.push(text.value);
+        renderList(arr);
+      }
+      btnRightOut.onclick = () => {
+        arr.pop();
+        renderList(arr);
+      }
+      btnBubble.onclick = () => {
+
+        bubbleRenderlist(arr)
+
+      }
+    }
+
+    function renderList(arr) {
+      container.innerHTML = "";
+      for (let i = 0; i < arr.length; i++) {
+        let span = document.createElement("span");
+        span.innerHTML = arr[i];
+        span.style.minHeight = arr[i] + 'px'; //TODO: 问题很严重 改变style属性 却没用 再查 
+        span.style.display = 'inline-block'
+        // span.style.width = parseInt(arr[i] / 6) + 'px';
+        // span.style.backgroundcolor = "red";
+        // console.log(span.style);
+        container.appendChild(span);
+      }
+    }
+
+    function bubbleRenderlist(arr) {
+      let coutt = 1
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i; j++) {
+          const t = coutt
+          if (arr[j] > arr[j + 1]) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          }
+          const arrCopy = arr.slice();
+
+          (function (arrCopy) {
+            setTimeout(() => {
+              console.log(arrCopy)
+              alert(t)
+              renderList(arrCopy);
+            }, 1500 * t)
+          })(arrCopy)
+
+          // setTimeout(() => {
+          //   renderList(arrCopy);
+          // }, 200 * t)
+          coutt++
+        }
+      }
+    }
+    click()
+  </script>
+</body>
+
+</html>
